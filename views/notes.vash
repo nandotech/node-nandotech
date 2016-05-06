@@ -1,0 +1,51 @@
+﻿@html.extend('layout', function(model) {
+
+  @html.block("scripts", function (model) {
+    <script src="/lib/socket.io-client/dist/socket.io.min.js"></script>
+    <script src="/js/notesView.js"></script>
+  })
+
+  @html.block("body", function (model) {
+
+<div ng-app="notesView">
+  <a href="/" class="btn btn-info">Back</a>
+  <div ng-controller="notesViewController">
+    <div class="note" ng-repeat="n in notes" ng-class="'note-' + n.color">
+      <div>{{ n.note }}</div>
+      <div class="note-author"><small>-{{ n.author }}</small></div>
+    </div>
+
+    <form role="form" class="form-horizontal" name="newNoteForm" ng-submit="save()">
+      <div class="form-group">
+        <label class="control-label col-lg-1">Color</label>
+        <div class="col-lg-5">
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary" ng-model="newNote.color" btn-radio="'yellow'">Yellow</button>
+            <button type="button" class="btn btn-primary" ng-model="newNote.color" btn-radio="'blue'">Blue</button>
+            <button type="button" class="btn btn-primary" ng-model="newNote.color" btn-radio="'green'">Green</button>
+            <button type="button" class="btn btn-primary" ng-model="newNote.color" btn-radio="'orange'">Orange</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-lg-1">Content</label>
+        <div class="col-lg-5">
+          <textarea cols="30" rows="2" name="note" ng-model="newNote.note" placeholder="Your Note" class="form-control" required maxlength="120"></textarea>
+          <span ng-show="newNoteForm.note.$error.required">Required</span>
+          <p>{{ 120 - newNote.note.length }}</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-offset-1 col-lg-5">
+          <input type="submit" value="Save" class="btn btn-primary" ng-disabled="newNoteForm.$invalid">
+        </div>
+      </div>
+    </form>
+
+
+  </div>
+</div>
+
+
+  })
+})
